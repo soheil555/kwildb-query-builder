@@ -1,0 +1,29 @@
+{
+  "name": "kwildb-query-builder",
+  "version": "1.0.0",
+  "description": "A SQL query builder for KwilDB",
+  "files": [
+    "kwildb-query-builder.d.ts",
+    "kwildb-query-builder.js",
+    "kwildb-query-builder.js.map"
+  ],
+  "scripts": {
+    "_clear": "rimraf build/compiled/*",
+    "_tsc": "tsc",
+    "_make-bundle": "rollup --config",
+    "build": "run-s _clear _tsc _make-bundle"
+  },
+  "main": "kwildb-query-builder.js",
+  "types": "kwildb-query-builder.d.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^8.3.2",
+    "rollup": "^2.74.1",
+    "rollup-plugin-dts": "^4.2.1"
+  },
+  "dependencies": {
+    "kwildb": "^1.2.28"
+  }
+}
