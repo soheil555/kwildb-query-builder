@@ -40,7 +40,7 @@ export class KwilDBQueryBuilder {
   public async first(sync = this.sync) {
     this.queryBuilder.limit(1);
     const result = await this.execute(sync);
-    return result[0] || null;
+    return result.rows[0] || null;
   }
 
   public async firstOrFail(sync = this.sync) {
