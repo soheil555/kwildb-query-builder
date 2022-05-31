@@ -1,6 +1,6 @@
 # KwilDB-Query-Builder
 
-- A SQL query builder for KwilDB.
+- A SQL query builder for [KwilDB](https://kwil.com/).
 - Built on top of [Knex.js](https://knexjs.org/).
 - Built-in typescript support
 
@@ -8,7 +8,7 @@
 
 
 
-### Installation
+## Installation
 
 ```shell
 npm install kwildb-query-builder
@@ -16,7 +16,9 @@ npm install kwildb-query-builder
 
 
 
-### Initialization
+
+
+## Initialization
 
 ```typescript
 import { readFileSync } from "fs";
@@ -38,7 +40,7 @@ const kwildb = new KwilDB({
 
 
 
-### Documentation
+## Documentation
 
 browse [Documentation](https://soheil555.github.io/kwildb-query-builder/)
 
@@ -46,7 +48,7 @@ browse [Documentation](https://soheil555.github.io/kwildb-query-builder/)
 
 
 
-### Schema and Table builder
+## Schema and Table builder
 
 
 
@@ -81,7 +83,7 @@ kwildb.dropTableIfExists(tableName: string, sync = true)
 
 
 
-#### Example
+### Example
 
 ```typescript
 const kwildb = new KwilDB({
@@ -108,11 +110,11 @@ await kwildb.dropSchema("testSchema")
 
 
 
+look at [knex.js Schema Builder page](http://knexjs.org/guide/schema-builder.html) for more info
 
 
 
-
-### QueryBuilder
+## QueryBuilder
 
 
 
@@ -122,7 +124,7 @@ kwildb.query(tableName: string, schemaName?: string, sync = false)
 
 
 
-#### Example
+### Example
 
 ```typescript
 const kwildb = new KwilDB({
@@ -134,7 +136,7 @@ const kwildb = new KwilDB({
 });
 
 
-// for read queries, you have to end the method chain with execute() method.
+// For read queries excepts first() and firstOrFail(), you have to end the method chain with execute() method to run it.
 const result = await kwildb.query("users", "testSchema").select("name").whereNull("age").execute()
 
 
@@ -151,19 +153,41 @@ await kwildb.query("users").insert([
 
 
 
-#### Supported methods
+### Supported methods
 
-list of all available methods (**excepts first() and firstOrFail() methods** ) is available at  [query builder documentation page](https://soheil555.github.io/kwildb-query-builder/classes/KwilDBQueryBuilder.html)
+list of all available methods **excepts execute(), first() and firstOrFail() methods**  are available at  [query builder documentation page](https://soheil555.github.io/kwildb-query-builder/classes/KwilDBQueryBuilder.html)
 
-#### Syntax
+### Syntax
 
-Synx of all available methods is the same as knex.js query builder syntax. 
+Syntax of all available methods is the same as knex.js query builder syntax. 
 
 you can find knex.js query builder documentation page at http://knexjs.org/guide/query-builder
 
 
 
-### first
+
+
+### execute, first and firstOrFail Query  builder methods
+
+
+
+#### execute
+
+```typescript
+execute(sync?: boolean)
+```
+
+For read queries excepts first() and firstOrFail(), you have to end the method chain with execute() method to run it.
+
+```typescript
+const result = await kwildb.query("users").max("age as a").execute()
+```
+
+
+
+
+
+#### first
 
 The select queries always return an array of objects, even when the query is intended to fetch a single row. However, using the `first` method will give you the first row or null (when there are no rows).
 
@@ -178,7 +202,7 @@ if (user) {
 
 
 
-### firstOrFail
+#### firstOrFail
 
 The `firstOrFail` method is similar to the `first` method except, it raises an exception when no rows are found.
 
@@ -190,7 +214,7 @@ const user = await kwildb.query("users").where("id",1).firstOrFail()
 
 
 
-#### Raw Query
+## Raw Query
 
 
 
