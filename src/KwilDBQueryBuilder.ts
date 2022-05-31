@@ -1,14 +1,5 @@
-const KwilDBAPI = require("kwildb");
-import { knex, Knex } from "knex";
+import { Knex } from "knex";
 import { Exception } from "@poppinss/utils";
-
-type Config = {
-  host: string;
-  protocol: string;
-  moat: string;
-  privateKey: string;
-  secret: string;
-};
 
 type ClearStatements =
   | "with"
@@ -27,47 +18,29 @@ type ClearStatements =
   | "counter"
   | "counters";
 
-export class KwilDB {
-  private kwildb: any;
-  private knex: Knex;
-
-  constructor(config: Config) {
-    this.kwildb = KwilDBAPI.createConnector(
-      {
-        host: config.host,
-        protocol: config.protocol,
-        moat: config.moat,
-        privateKey: config.privateKey,
-      },
-      config.secret
-    );
-    this.knex = knex({ client: "pg" });
-  }
-
-  query(tableName: string) {
-    return new KwilDBQueryBuilder(this.kwildb, this.knex, tableName);
-  }
-}
-
 export class KwilDBQueryBuilder {
   private queryBuilder: Knex.QueryBuilder;
 
-  constructor(private kwildb: any, knex: Knex, tableName: string) {
+  constructor(
+    private kwildb: any,
+    knex: Knex,
+    tableName: string,
+    private sync = false
+  ) {
     this.queryBuilder = knex(tableName);
   }
 
-  public async execute(sync = false) {
+  public async execute(sync = this.sync) {
     return await this.kwildb.query(this.queryBuilder.toString(), sync);
   }
 
-  //TODO: do we need sync in first and firstOrFail
-  public async first(sync = false) {
+  public async first(sync = this.sync) {
     this.queryBuilder.limit(1);
     const result = await this.execute(sync);
     return result[0] || null;
   }
 
-  public async firstOrFail(sync = false) {
+  public async firstOrFail(sync = this.sync) {
     const row = this.first(sync);
     if (!row) {
       throw new Exception("Row not found", 404, "ROW_NOT_FOUND");
@@ -109,6 +82,49 @@ export class KwilDBQueryBuilder {
     return this;
   }
 
+  public whereBetween(columnName: string | number | symbol, range: [any, any]) {
+    this.queryBuilder.whereBetween(columnName, range);
+    return this;
+  }
+
+  public andWhereBetween(
+    columnName: string | number | symbol,
+    range: [any, any]
+  ) {
+    return this.whereBetween(columnName, range);
+  }
+
+  public orWhereBetween(
+    columnName: string | number | symbol,
+    range: [any, any]
+  ) {
+    this.queryBuilder.orWhereBetween(columnName, range);
+    return this;
+  }
+
+  public whereNotBetween(
+    columnName: string | number | symbol,
+    range: [any, any]
+  ) {
+    this.queryBuilder.whereNotBetween(columnName, range);
+    return this;
+  }
+
+  public andWhereNotBetween(
+    columnName: string | number | symbol,
+    range: [any, any]
+  ) {
+    return this.whereNotBetween(columnName, range);
+  }
+
+  public orWhereNotBetween(
+    columnName: string | number | symbol,
+    range: [any, any]
+  ) {
+    this.queryBuilder.orWhereNotBetween(columnName, range);
+    return this;
+  }
+
   public whereLike(key: any, value: any) {
     this.queryBuilder.whereLike(key, value);
     return this;
@@ -137,6 +153,22 @@ export class KwilDBQueryBuilder {
     return this;
   }
 
+  public orderBy(columnName: string | number | symbol, direction?: any) {
+    this.queryBuilder.orderBy(columnName, direction);
+    return this;
+  }
+
+  public limit(value: number) {
+    this.queryBuilder.limit(value);
+    return this;
+  }
+
+  // Truncate Query
+  public async truncate(sync = this.sync) {
+    this.queryBuilder.truncate();
+    const result = await this.execute(sync);
+  }
+
   // Join Methods
 
   public join(table: any, first: any, operator?: any, second?: any) {
@@ -161,23 +193,26 @@ export class KwilDBQueryBuilder {
 
   // Insert Query
 
-  public insert(columns: any) {
+  public async insert(columns: any, sync = this.sync) {
     this.queryBuilder.insert(columns);
-    return this;
+    const result = await this.execute(sync);
+    return result;
   }
 
   // Update Query
 
-  public update(data: any, returning: any) {
+  public async update(data: any, returning: any, sync = this.sync) {
     this.queryBuilder.update(data, returning);
-    return this;
+    const result = await this.execute(sync);
+    return result;
   }
 
   // Delete Query
 
-  public del(returning?: string | string[]) {
+  public async del(returning?: string | string[], sync = this.sync) {
     returning ? this.queryBuilder.del(returning) : this.queryBuilder.del();
-    return this;
+    const result = await this.execute(sync);
+    return result;
   }
 
   public delete(returning?: string | string[]) {
@@ -218,13 +253,3 @@ export class KwilDBQueryBuilder {
     return this;
   }
 }
-
-let db = new KwilDB({
-  host: "",
-  protocol: "",
-  moat: "",
-  privateKey: "",
-  secret: "",
-});
-
-db.query("users").select("*").where("name", "soheil");

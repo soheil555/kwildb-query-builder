@@ -7,7 +7,7 @@
     "outDir": "build/compiled",
     "declaration": true,
     "strict": true,
-    "module": "commonjs",
+    "module": "ESNext",
     "noEmitOnError": true,
     "lib": ["es2017"],
     "esModuleInterop": false
