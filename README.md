@@ -6,6 +6,12 @@ Built on top of [Knex.js](https://knexjs.org/).
 
 
 
+> Readme is under development. Please come back later.
+
+
+
+
+
 ### Installation
 
 ```shell
@@ -34,3 +40,45 @@ const kwildb = new KwilDB({
 
 
 
+
+
+### QueryBuilder
+
+```typescript
+query(tableName: string, schemaName?: string, sync = false)
+```
+
+#### example
+
+```typescript
+const kwildb = new KwilDB({
+  host: "test-db.kwil.xyz",
+  protocol: "https",
+  moat: "testdemo",
+  privateKey: privateKey,
+  secret,
+});
+
+
+// for read
+await kwildb.query("users", "testSchema").select("name").whereNull("age").execute()
+
+
+await kwildb.query("users").insert([
+    {
+        name: "test1",
+    },
+    {
+        name: "test2",
+    },
+]);
+
+```
+
+
+
+
+
+# License
+
+Available under the MIT license. See the `LICENSE` file for more info.
