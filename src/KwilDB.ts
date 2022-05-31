@@ -28,19 +28,25 @@ export class KwilDB {
     this.knex = knex({ client: "pg" });
   }
 
-  public query(tableName: string, sync = false) {
-    return new KwilDBQueryBuilder(this.kwildb, this.knex, tableName);
+  public query(tableName: string, schemaName?: string, sync = false) {
+    return new KwilDBQueryBuilder(
+      this.kwildb,
+      this.knex,
+      tableName,
+      schemaName,
+      sync
+    );
   }
 
   // create and drop schema
 
-  public async createSchema(schemaName: string, sync = false) {
+  public async createSchema(schemaName: string, sync = true) {
     const schemaBuilder = this.knex.schema.createSchema(schemaName);
     const result = await this.kwildb.query(schemaBuilder.toString(), sync);
     return result;
   }
 
-  public async dropSchema(schemaName: string, cascade?: boolean, sync = false) {
+  public async dropSchema(schemaName: string, cascade?: boolean, sync = true) {
     const schemaBuilder = this.knex.schema.dropSchema(schemaName, cascade);
 
     const result = await this.kwildb.query(schemaBuilder.toString(), sync);
@@ -50,7 +56,7 @@ export class KwilDB {
   public async dropSchemaIfExists(
     schemaName: string,
     cascade?: boolean,
-    sync = false
+    sync = true
   ) {
     const schemaBuilder = this.knex.schema.dropSchemaIfExists(
       schemaName,
@@ -67,7 +73,7 @@ export class KwilDB {
     tableName: string,
     builder: (tableBuilder: Knex.CreateTableBuilder) => any,
     schemaName?: string,
-    sync = false
+    sync = true
   ) {
     const schemaBuilder = schemaName
       ? this.knex.schema.withSchema(schemaName).createTable(tableName, builder)
@@ -77,13 +83,13 @@ export class KwilDB {
     return result;
   }
 
-  public async dropTable(tableName: string, sync = false) {
+  public async dropTable(tableName: string, sync = true) {
     const schemaBuilder = this.knex.schema.dropTable(tableName);
     const result = await this.kwildb.query(schemaBuilder.toString(), sync);
     return result;
   }
 
-  public async dropTableIfExists(tableName: string, sync = false) {
+  public async dropTableIfExists(tableName: string, sync = true) {
     const schemaBuilder = this.knex.schema.dropTableIfExists(tableName);
     const result = await this.kwildb.query(schemaBuilder.toString(), sync);
     return result;

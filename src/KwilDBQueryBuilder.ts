@@ -25,9 +25,12 @@ export class KwilDBQueryBuilder {
     private kwildb: any,
     knex: Knex,
     tableName: string,
+    schemaName?: string,
     private sync = false
   ) {
-    this.queryBuilder = knex(tableName);
+    this.queryBuilder = schemaName
+      ? knex(tableName).withSchema(schemaName)
+      : knex(tableName);
   }
 
   public async execute(sync = this.sync) {
