@@ -52,10 +52,78 @@ browse [Documentation](https://soheil555.github.io/kwildb-query-builder/)
 
 
 
+
+
+### Schema and Table builder
+
+
+
+```typescript
+// create and drop schema
+
+kwildb.createSchema(schemaName: string, sync = true)
+
+kwildb.dropSchema(schemaName: string, cascade?: boolean, sync = true) 
+
+kwildb.dropSchemaIfExists(
+    schemaName: string,
+    cascade?: boolean,
+    sync = true
+  )
+
+
+// create and drop table
+
+kwildb.createTable(
+    tableName: string,
+    builder: (tableBuilder: Knex.CreateTableBuilder) => any,
+    schemaName?: string,
+    sync = true
+  ) 
+
+kwildb.dropTable(tableName: string, sync = true)
+
+kwildb.dropTableIfExists(tableName: string, sync = true)
+
+```
+
+
+
+#### Example
+
+```typescript
+const kwildb = new KwilDB({
+  host: "test-db.kwil.xyz",
+  protocol: "https",
+  moat: "testdemo",
+  privateKey: privateKey,
+  secret,
+});  
+
+
+// create a table
+// second argument is a callback function to modify the table's structure using the knex.js schema-building commands.
+await kwildb.createTable("users",(builder) => {
+    builder.increments("id"),
+    builder.string("name"),
+    builder.integer("age")
+  },"testSchema")
+
+
+// drop a schema
+await kwildb.dropSchema("testSchema")
+```
+
+
+
+
+
+
+
 ### QueryBuilder
 
 ```typescript
-query(tableName: string, schemaName?: string, sync = false)
+kwildb.query(tableName: string, schemaName?: string, sync = false)
 ```
 
 
