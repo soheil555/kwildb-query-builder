@@ -6,6 +6,10 @@ Built on top of [Knex.js](https://knexjs.org/).
 
 
 
+
+
+
+
 > Readme is under development. Please come back later.
 
 
@@ -42,13 +46,21 @@ const kwildb = new KwilDB({
 
 
 
+### Documentation
+
+browse [Documentation](https://soheil555.github.io/kwildb-query-builder/)
+
+
+
 ### QueryBuilder
 
 ```typescript
 query(tableName: string, schemaName?: string, sync = false)
 ```
 
-#### example
+
+
+#### Example
 
 ```typescript
 const kwildb = new KwilDB({
@@ -60,8 +72,8 @@ const kwildb = new KwilDB({
 });
 
 
-// for read
-await kwildb.query("users", "testSchema").select("name").whereNull("age").execute()
+// for read queries, you have to end the method chain with execute() method.
+const result = await kwildb.query("users", "testSchema").select("name").whereNull("age").execute()
 
 
 await kwildb.query("users").insert([
@@ -76,6 +88,16 @@ await kwildb.query("users").insert([
 ```
 
 
+
+#### Supported methods
+
+list of all available methods is available at  [query builder documentation page](https://soheil555.github.io/kwildb-query-builder/classes/KwilDBQueryBuilder.html)
+
+#### Syntax
+
+Synx of all available methods is the same as knex.js query builder syntax. 
+
+you can find knex.js query builder documentation page at http://knexjs.org/guide/query-builder
 
 
 
