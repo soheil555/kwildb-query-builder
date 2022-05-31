@@ -2,18 +2,100 @@
 <a href="#kwildb-query-builder" id="kwildb-query-builder" style="color: inherit; text-decoration: none;">
   <h1>KwilDB-Query-Builder</h1>
 </a>
-<p>A SQL query builder for KwilDB.</p>
-<p>Built on top of <a href="https://knexjs.org/">Knex.js</a>.</p>
+<ul>
+<li>A SQL query builder for <a href="https://kwil.com/">KwilDB</a>.</li>
+<li>Built on top of <a href="https://knexjs.org/">Knex.js</a>.</li>
+<li>Built-in typescript support</li>
+</ul>
 
 <a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
-  <h3>Installation</h3>
+  <h2>Installation</h2>
 </a>
 <pre><code class="language-shell"><span class="hl-0">npm install kwildb-query-builder</span>
 </code></pre>
 
 <a href="#initialization" id="initialization" style="color: inherit; text-decoration: none;">
-  <h3>Initialization</h3>
+  <h2>Initialization</h2>
 </a>
 <pre><code class="language-typescript"><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">readFileSync</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&quot;fs&quot;</span><span class="hl-0">;</span><br/><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">KwilDB</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&quot;kwildb-query-builder&quot;</span><span class="hl-0">;</span><br/><br/><span class="hl-4">let</span><span class="hl-0"> </span><span class="hl-2">privateKey</span><span class="hl-0"> = </span><span class="hl-5">JSON</span><span class="hl-0">.</span><span class="hl-6">parse</span><span class="hl-0">(</span><span class="hl-6">readFileSync</span><span class="hl-0">(</span><span class="hl-3">&quot;./privateKey.json&quot;</span><span class="hl-0">).</span><span class="hl-6">toString</span><span class="hl-0">());</span><br/><span class="hl-4">let</span><span class="hl-0"> </span><span class="hl-2">secret</span><span class="hl-0"> = </span><span class="hl-3">&quot;LT|UllzAI~.V-10!ITC&amp;nf#IV;KJV6Tk&quot;</span><span class="hl-0">;</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">kwildb</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-6">KwilDB</span><span class="hl-0">({</span><br/><span class="hl-0">  </span><span class="hl-2">host:</span><span class="hl-0"> </span><span class="hl-3">&quot;test-db.kwil.xyz&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">protocol:</span><span class="hl-0"> </span><span class="hl-3">&quot;https&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">moat:</span><span class="hl-0"> </span><span class="hl-3">&quot;testdemo&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">privateKey:</span><span class="hl-0"> </span><span class="hl-2">privateKey</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">secret</span><span class="hl-0">,</span><br/><span class="hl-0">});</span>
 </code></pre>
+
+<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
+  <h2>Documentation</h2>
+</a>
+<p>browse <a href="https://soheil555.github.io/kwildb-query-builder/">Documentation</a></p>
+
+<a href="#schema-and-table-builder" id="schema-and-table-builder" style="color: inherit; text-decoration: none;">
+  <h2>Schema and Table builder</h2>
+</a>
+<pre><code class="language-typescript"><span class="hl-8">// create and drop schema</span><br/><br/><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">createSchema</span><span class="hl-0">(</span><span class="hl-2">schemaName</span><span class="hl-0">: </span><span class="hl-2">string</span><span class="hl-0">, </span><span class="hl-2">sync</span><span class="hl-0"> = </span><span class="hl-4">true</span><span class="hl-0">)</span><br/><br/><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">dropSchema</span><span class="hl-0">(</span><span class="hl-2">schemaName</span><span class="hl-0">: </span><span class="hl-2">string</span><span class="hl-0">, </span><span class="hl-2">cascade</span><span class="hl-0">?: </span><span class="hl-2">boolean</span><span class="hl-0">, </span><span class="hl-2">sync</span><span class="hl-0"> = </span><span class="hl-4">true</span><span class="hl-0">) </span><br/><br/><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">dropSchemaIfExists</span><span class="hl-0">(</span><br/><span class="hl-0">    </span><span class="hl-2">schemaName</span><span class="hl-0">: </span><span class="hl-2">string</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-2">cascade</span><span class="hl-0">?: </span><span class="hl-2">boolean</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-2">sync</span><span class="hl-0"> = </span><span class="hl-4">true</span><br/><span class="hl-0">  )</span><br/><br/><br/><span class="hl-8">// create and drop table</span><br/><br/><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">createTable</span><span class="hl-0">(</span><br/><span class="hl-0">    </span><span class="hl-2">tableName</span><span class="hl-0">: </span><span class="hl-2">string</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-2">builder</span><span class="hl-0">: (</span><span class="hl-2">tableBuilder</span><span class="hl-0">: </span><span class="hl-5">Knex</span><span class="hl-0">.</span><span class="hl-5">CreateTableBuilder</span><span class="hl-0">) </span><span class="hl-4">=&gt;</span><span class="hl-0"> </span><span class="hl-2">any</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-2">schemaName</span><span class="hl-0">?: </span><span class="hl-2">string</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-2">sync</span><span class="hl-0"> = </span><span class="hl-4">true</span><br/><span class="hl-0">  ) </span><br/><br/><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">dropTable</span><span class="hl-0">(</span><span class="hl-2">tableName</span><span class="hl-0">: </span><span class="hl-2">string</span><span class="hl-0">, </span><span class="hl-2">sync</span><span class="hl-0"> = </span><span class="hl-4">true</span><span class="hl-0">)</span><br/><br/><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">dropTableIfExists</span><span class="hl-0">(</span><span class="hl-2">tableName</span><span class="hl-0">: </span><span class="hl-2">string</span><span class="hl-0">, </span><span class="hl-2">sync</span><span class="hl-0"> = </span><span class="hl-4">true</span><span class="hl-0">)</span><br/>
+</code></pre>
+
+<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+  <h3>Example</h3>
+</a>
+<pre><code class="language-typescript"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">kwildb</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-6">KwilDB</span><span class="hl-0">({</span><br/><span class="hl-0">  </span><span class="hl-2">host:</span><span class="hl-0"> </span><span class="hl-3">&quot;test-db.kwil.xyz&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">protocol:</span><span class="hl-0"> </span><span class="hl-3">&quot;https&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">moat:</span><span class="hl-0"> </span><span class="hl-3">&quot;testdemo&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">privateKey:</span><span class="hl-0"> </span><span class="hl-2">privateKey</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">secret</span><span class="hl-0">,</span><br/><span class="hl-0">});  </span><br/><br/><br/><span class="hl-8">// create a table</span><br/><span class="hl-8">// second argument is a callback function to modify the table&#39;s structure using the knex.js schema-building commands.</span><br/><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">createTable</span><span class="hl-0">(</span><span class="hl-3">&quot;users&quot;</span><span class="hl-0">,(</span><span class="hl-2">builder</span><span class="hl-0">) </span><span class="hl-4">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">builder</span><span class="hl-0">.</span><span class="hl-6">increments</span><span class="hl-0">(</span><span class="hl-3">&quot;id&quot;</span><span class="hl-0">),</span><br/><span class="hl-0">    </span><span class="hl-2">builder</span><span class="hl-0">.</span><span class="hl-6">string</span><span class="hl-0">(</span><span class="hl-3">&quot;name&quot;</span><span class="hl-0">),</span><br/><span class="hl-0">    </span><span class="hl-2">builder</span><span class="hl-0">.</span><span class="hl-6">integer</span><span class="hl-0">(</span><span class="hl-3">&quot;age&quot;</span><span class="hl-0">)</span><br/><span class="hl-0">  },</span><span class="hl-3">&quot;testSchema&quot;</span><span class="hl-0">)</span><br/><br/><br/><span class="hl-8">// drop a schema</span><br/><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">dropSchema</span><span class="hl-0">(</span><span class="hl-3">&quot;testSchema&quot;</span><span class="hl-0">)</span>
+</code></pre>
+<p>look at <a href="http://knexjs.org/guide/schema-builder.html">knex.js Schema Builder page</a> for more info</p>
+
+<a href="#querybuilder" id="querybuilder" style="color: inherit; text-decoration: none;">
+  <h2>QueryBuilder</h2>
+</a>
+<pre><code class="language-typescript"><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">query</span><span class="hl-0">(</span><span class="hl-2">tableName</span><span class="hl-0">: </span><span class="hl-2">string</span><span class="hl-0">, </span><span class="hl-2">schemaName</span><span class="hl-0">?: </span><span class="hl-2">string</span><span class="hl-0">, </span><span class="hl-2">sync</span><span class="hl-0"> = </span><span class="hl-4">false</span><span class="hl-0">)</span>
+</code></pre>
+
+<a href="#example-1" id="example-1" style="color: inherit; text-decoration: none;">
+  <h3>Example</h3>
+</a>
+<pre><code class="language-typescript"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">kwildb</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-6">KwilDB</span><span class="hl-0">({</span><br/><span class="hl-0">  </span><span class="hl-2">host:</span><span class="hl-0"> </span><span class="hl-3">&quot;test-db.kwil.xyz&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">protocol:</span><span class="hl-0"> </span><span class="hl-3">&quot;https&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">moat:</span><span class="hl-0"> </span><span class="hl-3">&quot;testdemo&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">privateKey:</span><span class="hl-0"> </span><span class="hl-2">privateKey</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">secret</span><span class="hl-0">,</span><br/><span class="hl-0">});</span><br/><br/><br/><span class="hl-8">// For read queries excepts first() and firstOrFail(), you have to end the method chain with execute() method to run it.</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">result</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">query</span><span class="hl-0">(</span><span class="hl-3">&quot;users&quot;</span><span class="hl-0">, </span><span class="hl-3">&quot;testSchema&quot;</span><span class="hl-0">).</span><span class="hl-6">select</span><span class="hl-0">(</span><span class="hl-3">&quot;name&quot;</span><span class="hl-0">).</span><span class="hl-6">whereNull</span><span class="hl-0">(</span><span class="hl-3">&quot;age&quot;</span><span class="hl-0">).</span><span class="hl-6">execute</span><span class="hl-0">()</span><br/><br/><br/><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">query</span><span class="hl-0">(</span><span class="hl-3">&quot;users&quot;</span><span class="hl-0">).</span><span class="hl-6">insert</span><span class="hl-0">([</span><br/><span class="hl-0">    {</span><br/><span class="hl-0">        </span><span class="hl-2">name:</span><span class="hl-0"> </span><span class="hl-3">&quot;test1&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    },</span><br/><span class="hl-0">    {</span><br/><span class="hl-0">        </span><span class="hl-2">name:</span><span class="hl-0"> </span><span class="hl-3">&quot;test2&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    },</span><br/><span class="hl-0">], </span><span class="hl-4">true</span><span class="hl-0">);</span><br/>
+</code></pre>
+
+<a href="#supported-methods" id="supported-methods" style="color: inherit; text-decoration: none;">
+  <h3>Supported methods</h3>
+</a>
+<p>list of all available methods <strong>excepts execute(), first() and firstOrFail() methods</strong>  are available at  <a href="https://soheil555.github.io/kwildb-query-builder/classes/KwilDBQueryBuilder.html">query builder documentation page</a></p>
+
+<a href="#syntax" id="syntax" style="color: inherit; text-decoration: none;">
+  <h3>Syntax</h3>
+</a>
+<p>Syntax of all available methods is the same as knex.js query builder syntax. </p>
+<p>you can find knex.js query builder documentation page at <a href="http://knexjs.org/guide/query-builder">http://knexjs.org/guide/query-builder</a></p>
+
+<a href="#execute-first-and-firstorfail-query--builder-methods" id="execute-first-and-firstorfail-query--builder-methods" style="color: inherit; text-decoration: none;">
+  <h3>execute, first and firstOrFail Query  builder methods</h3>
+</a>
+
+<a href="#execute" id="execute" style="color: inherit; text-decoration: none;">
+  <h4>execute</h4>
+</a>
+<pre><code class="language-typescript"><span class="hl-6">execute</span><span class="hl-0">(</span><span class="hl-2">sync</span><span class="hl-0">?: </span><span class="hl-2">boolean</span><span class="hl-0">)</span>
+</code></pre>
+<p>For read queries excepts first() and firstOrFail(), you have to end the method chain with execute() method to run it.</p>
+<pre><code class="language-typescript"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">result</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">query</span><span class="hl-0">(</span><span class="hl-3">&quot;users&quot;</span><span class="hl-0">).</span><span class="hl-6">max</span><span class="hl-0">(</span><span class="hl-3">&quot;age as a&quot;</span><span class="hl-0">).</span><span class="hl-6">execute</span><span class="hl-0">()</span>
+</code></pre>
+
+<a href="#first" id="first" style="color: inherit; text-decoration: none;">
+  <h4>first</h4>
+</a>
+<p>The select queries always return an array of objects, even when the query is intended to fetch a single row. However, using the <code>first</code> method will give you the first row or null (when there are no rows).</p>
+<pre><code class="language-typescript"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">user</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">query</span><span class="hl-0">(</span><span class="hl-3">&quot;users&quot;</span><span class="hl-0">).</span><span class="hl-6">where</span><span class="hl-0">(</span><span class="hl-3">&quot;id&quot;</span><span class="hl-0">,</span><span class="hl-9">1</span><span class="hl-0">).</span><span class="hl-6">first</span><span class="hl-0">()</span><br/><span class="hl-1">if</span><span class="hl-0"> (</span><span class="hl-2">user</span><span class="hl-0">) {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-6">log</span><span class="hl-0">(</span><span class="hl-2">user</span><span class="hl-0">)</span><br/><span class="hl-0">}</span>
+</code></pre>
+
+<a href="#firstorfail" id="firstorfail" style="color: inherit; text-decoration: none;">
+  <h4>firstOrFail</h4>
+</a>
+<p>The <code>firstOrFail</code> method is similar to the <code>first</code> method except, it raises an exception when no rows are found.</p>
+<pre><code><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">user</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">query</span><span class="hl-0">(</span><span class="hl-3">&quot;users&quot;</span><span class="hl-0">).</span><span class="hl-6">where</span><span class="hl-0">(</span><span class="hl-3">&quot;id&quot;</span><span class="hl-0">,</span><span class="hl-9">1</span><span class="hl-0">).</span><span class="hl-6">firstOrFail</span><span class="hl-0">()</span>
+</code></pre>
+
+<a href="#raw-query" id="raw-query" style="color: inherit; text-decoration: none;">
+  <h2>Raw Query</h2>
+</a>
+<pre><code class="language-typescript"><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">rawQuery</span><span class="hl-0">(</span><span class="hl-2">query</span><span class="hl-0">: </span><span class="hl-2">string</span><span class="hl-0">, </span><span class="hl-2">sync</span><span class="hl-0"> = </span><span class="hl-4">false</span><span class="hl-0">)</span><br/><span class="hl-2">kwildb</span><span class="hl-0">.</span><span class="hl-6">preparedStatement</span><span class="hl-0">(</span><span class="hl-2">query</span><span class="hl-0">: </span><span class="hl-2">string</span><span class="hl-0">, </span><span class="hl-2">values</span><span class="hl-0">: </span><span class="hl-2">any</span><span class="hl-0">[], </span><span class="hl-2">sync</span><span class="hl-0"> = </span><span class="hl-4">false</span><span class="hl-0">)</span>
+</code></pre>
+
+<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+  <h1>License</h1>
+</a>
+<p>Available under the MIT license. See the <code>LICENSE</code> file for more info.</p>
 </div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li><li class=" tsd-kind-namespace"><a href="modules/_internal_.html">&lt;internal&gt;</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-reference"><a href="modules.html#default" class="tsd-kind-icon">default</a></li><li class="tsd-kind-class"><a href="classes/KwilDB.html" class="tsd-kind-icon">KwilDB</a></li><li class="tsd-kind-class"><a href="classes/KwilDBQueryBuilder.html" class="tsd-kind-icon">KwilDBQuery<wbr/>Builder</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
