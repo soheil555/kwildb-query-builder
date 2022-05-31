@@ -1,5 +1,4 @@
 import { Knex } from "knex";
-import { Exception } from "@poppinss/utils";
 
 type ClearStatements =
   | "with"
@@ -41,15 +40,6 @@ export class KwilDBQueryBuilder {
     this.queryBuilder.limit(1);
     const result = await this.execute(sync);
     return result.rows[0] || null;
-  }
-
-  public async firstOrFail(sync = this.sync) {
-    const row = this.first(sync);
-    if (!row) {
-      throw new Exception("Row not found", 404, "ROW_NOT_FOUND");
-    }
-
-    return row;
   }
 
   // Select

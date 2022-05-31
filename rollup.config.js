@@ -8,7 +8,7 @@ const config = [
       format: "cjs",
       sourcemap: true,
     },
-    external: ["kwildb", "knex", "@poppinss/utils"],
+    external: ["kwildb", "knex"],
     plugins: [typescript()],
   },
   {
